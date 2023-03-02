@@ -33,24 +33,25 @@ def read_stats_data(data_path, year):
                          labels=["20-27", "27-30", "30-35", ">35"])
 
     
-    stats_year["goals_per_game"] = (stats_year["goal"] + stats_year["assistTotal"]) / stats_year["apps"]
+    stats_year["goals_per_game"] = (stats_year["goal"]) / stats_year["apps"]
     stats_year["shots_per_game"] = stats_year["shotsPerGame"] # / stats_year["apps"]
     stats_year["minutes_per_game"] = stats_year["minsPlayed"] / stats_year["apps"]
-
+    stats_year['assists_per_game'] = stats_year['assistTotal']/stats_year['apps']
+    stats_year['man_of_the_match_per_game'] = stats_year['manOfTheMatch']/stats_year['apps']
     stats_year = stats_year.rename(columns={"teamName": "team_name",
                                             "passSuccess": "pass_success",
                                             "firstName": "first_name",
                                             "lastName": "last_name"})
 
-    stats_year = stats_year[["age_group", 
-                             "team_name", 
-                             "shots_per_game", 
+    stats_year = stats_year[["age_group",
+                             "team_name",
+                             "shots_per_game",
                              "goals_per_game",
                              "pass_success",
                              "rating",
                              "minutes_per_game",
                              "first_name",
-                             "last_name"]]
+                             "last_name", 'man_of_the_match_per_game', 'assists_per_game']]
 
 
     # stats_year = pd.get_dummies(stats_year, columns=["age_group", "team_name"])
@@ -124,10 +125,10 @@ def merge_datasets(year, data_path):
     return merged
     
 
-def create_dataset():
+def create_dataset(start_year=2013, end_year=2018):
     df = pd.DataFrame()
 
-    for year in range(2013, 2018):
+    for year in range(start_year, end_year):
 
         # df = merge_datasets(year, "archive")
         df = df.append(merge_datasets(year, "archive"))
