@@ -121,6 +121,7 @@ def merge_datasets(year, data_path):
                         # left_on=["last_name", "first_name"],
                         # right_on=["lastName", "firstName"],
                         how="inner")
+        
 
     return merged
     
@@ -132,6 +133,11 @@ def create_dataset(start_year=2013, end_year=2018):
 
         # df = merge_datasets(year, "archive")
         df = df.append(merge_datasets(year, "archive"))
+
+
+    df = df.groupby(["first_name",
+                                   "last_name"]).nth(0)
+
 
     return df
 
